@@ -15,29 +15,29 @@ public:
 	// Sets default values for this character's properties
 	ATPCharacter();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float armLenght;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
+	float ArmLenght;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	FRotator rotationRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
+	FRotator RotationRate = FRotator(0, 500.0f, 0);
 	
 	// Camera arm (boom) using SpringArm Component
 	// Moves the camera close to the target whenever there's a collision
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	class USpringArmComponent* cameraArm;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USpringArmComponent* CameraArm;
 	
 	// Camera Component
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	class UCameraComponent* camera;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UCameraComponent* Camera;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	void LookX(float val);
-	void LookY(float val);
-	void MoveX(float val);
-	void MoveY(float val);
+	void LookX(float Val);
+	void LookY(float Val);
+	void MoveX(float Val);
+	void MoveY(float Val);
 
 public:	
 	// Called every frame

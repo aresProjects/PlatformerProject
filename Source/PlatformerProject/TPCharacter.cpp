@@ -11,28 +11,28 @@ ATPCharacter::ATPCharacter()
 {
  	// Set this character to call Tick() every frame. You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	// Set default values
-	armLenght = 300.0f;
-	rotationRate = FRotator(0, 500.0f, 0);
+	ArmLenght = 300.0f;
+	RotationRate = FRotator(0, 500.0f, 0);
 	
 	// Camera Arm (Boom)
-	cameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));  // Add component
-	cameraArm->SetupAttachment(RootComponent);                                   // Attach to "RootComponent"
-	cameraArm->TargetArmLength = armLenght;	                                     // Set length
-	cameraArm->bUsePawnControlRotation = true;                                   // Enable pawn controlled rotation
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));  // Add component
+	CameraArm->SetupAttachment(RootComponent);                                   // Attach to "RootComponent"
+	CameraArm->TargetArmLength = ArmLenght;	                                     // Set length
+	CameraArm->bUsePawnControlRotation = true;                                   // Enable pawn controlled rotation
 	
 	// Camera
-	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));           // Add component
-	camera->SetupAttachment(cameraArm, USpringArmComponent::SocketName);         // Attach to "cameraBoom" (at the end of the spring arm)
-	camera->bUsePawnControlRotation = false;                                     // Disable pawn controlled rotation
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));           // Add component
+	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);         // Attach to "cameraBoom" (at the end of the spring arm)
+	Camera->bUsePawnControlRotation = false;                                     // Disable pawn controlled rotation
 	
 	// Disable mesh rotation
 	bUseControllerRotationPitch = bUseControllerRotationRoll = bUseControllerRotationYaw = false;
 	
 	// Change mesh by movement input
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = rotationRate;
+	GetCharacterMovement()->RotationRate = RotationRate;
 }
 
 // Called when the game starts or when spawned
@@ -60,36 +60,36 @@ void ATPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("MoveY", this, &ATPCharacter::MoveY);
 }
 
-void ATPCharacter::LookX(float val)
+void ATPCharacter::LookX(const float Val)
 {
-	AddControllerYawInput(val * (45.0f * GetWorld()->GetDeltaSeconds()));
+	AddControllerYawInput(Val * (45.0f * GetWorld()->GetDeltaSeconds()));
 }
 
-void ATPCharacter::LookY(float val)
+void ATPCharacter::LookY(const float Val)
 {
-	AddControllerPitchInput(val * (45.0f * GetWorld()->GetDeltaSeconds()));
+	AddControllerPitchInput(Val * (45.0f * GetWorld()->GetDeltaSeconds()));
 }
 
-void ATPCharacter::MoveX(float val)
+void ATPCharacter::MoveX(const float Val)
 {
-	if (Controller == nullptr || val == 0.0f) return;
+	if (Controller == nullptr || Val == 0.0f) return;
 	
-	const FRotator rotation = Controller->GetControlRotation();		// Returns controller rotation
-	const FRotator yaw = FRotator(0, rotation.Yaw, 0);	// Save yaw rotation
-	const FVector dir = FRotationMatrix(yaw).GetUnitAxis(EAxis::Y); // Get direction (normalized)
+	const FRotator Rotation = Controller->GetControlRotation();		// Returns controller rotation
+	const FRotator Yaw = FRotator(0, Rotation.Yaw, 0);	// Save yaw rotation
+	const FVector Dir = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y); // Get direction (normalized)
 	
 	// Apply movement
-	AddMovementInput(dir, val);
+	AddMovementInput(Dir, Val);
 }
 
-void ATPCharacter::MoveY(float val)
+void ATPCharacter::MoveY(const float Val)
 {
-	if (Controller == nullptr || val == 0.0f) return;
+	if (Controller == nullptr || Val == 0.0f) return;
 	
-	const FRotator rotation = Controller->GetControlRotation();		// Returns controller rotation
-	const FRotator yaw = FRotator(0, rotation.Yaw, 0);	// Save yaw rotation
-	const FVector dir = FRotationMatrix(yaw).GetUnitAxis(EAxis::X); // Get direction (normalized)
+	const FRotator Rotation = Controller->GetControlRotation();		// Returns controller rotation
+	const FRotator Yaw = FRotator(0, Rotation.Yaw, 0);	// Save yaw rotation
+	const FVector Dir = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X); // Get direction (normalized)
 	
 	// Apply movement
-	AddMovementInput(dir, val);
+	AddMovementInput(Dir, Val);
 }
