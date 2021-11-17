@@ -18,8 +18,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
 	float ArmLenght;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float CameraSpeed;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
-	FRotator RotationRate = FRotator(0, 500.0f, 0);
+	FRotator RotationRate;
 	
 	// Camera arm (boom) using SpringArm Component
 	// Moves the camera close to the target whenever there's a collision

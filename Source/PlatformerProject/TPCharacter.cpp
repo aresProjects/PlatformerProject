@@ -15,6 +15,7 @@ ATPCharacter::ATPCharacter()
 	// Set default values
 	ArmLenght = 300.0f;
 	RotationRate = FRotator(0, 500.0f, 0);
+	CameraSpeed = 50.0f;
 	
 	// Camera Arm (Boom)
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));  // Add component
@@ -54,20 +55,27 @@ void ATPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
+	// Camera
 	PlayerInputComponent->BindAxis("LookX", this, &ATPCharacter::LookX);
 	PlayerInputComponent->BindAxis("LookY", this, &ATPCharacter::LookY);
+	
+	// Jump
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	
+	// Move
 	PlayerInputComponent->BindAxis("MoveX", this, &ATPCharacter::MoveX);
 	PlayerInputComponent->BindAxis("MoveY", this, &ATPCharacter::MoveY);
 }
 
 void ATPCharacter::LookX(const float Val)
 {
-	AddControllerYawInput(Val * (45.0f * GetWorld()->GetDeltaSeconds()));
+	AddControllerYawInput(Val * (CameraSpeed * GetWorld()->GetDeltaSeconds()));
 }
 
 void ATPCharacter::LookY(const float Val)
 {
-	AddControllerPitchInput(Val * (45.0f * GetWorld()->GetDeltaSeconds()));
+	AddControllerPitchInput(Val * (CameraSpeed * GetWorld()->GetDeltaSeconds()));
 }
 
 void ATPCharacter::MoveX(const float Val)
